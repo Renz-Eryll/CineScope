@@ -1,35 +1,57 @@
-import React from "react";
+import { Link } from "react-router-dom";
+import { imageUrl } from "../lib/tmdb";
+import useWatchlist from "../hooks/useWatchlist";
+import { BookmarkIcon, StarIcon } from "./Icons";
 
-const MovieCard = ({
-  movie: { title, vote_average, poster_path, release_date, original_language },
-}) => {
+const TYPE_LABEL = { movie: "Movie", tv: "Series" };
+
+const MovieCard = ({ media }) => {
+  const { isSaved, toggle } = useWatchlist();
+  const saved = isSaved(media);
+  const poster = imageUrl(media.posterPath, "w342");
+
   return (
-    <div className="movie-card">
-      <img
-        src={
-          poster_path
-            ? `https://image.tmdb.org/t/p/w500/${poster_path}`
-            : `/no-movie.png`
-        }
-        alt={title}
-      />
-      <div className="mt-4">
-        <h3>{title}</h3>
-        <div className="content">
-          <div className="rating">
-            <img src="star.svg" alt="Star icon" />
-            <p>{vote_average ? vote_average.toFixed(1) : "N/A"}</p>
-          </div>
-          <span>·</span>
-          <p className="lang">{original_language}</p>
-          <span>·</span>
-          <p className="year">
-            {release_date ? release_date.split("-")[0] : "N/A"}
-          </p>
+    <article className="media-card group">
+      <Link to={`/${media.mediaType}/${media.id}`} className="block">
+        <div className="poster">
+          <img
+            src={poster || "/no-movie.png"}
+            alt={media.title}
+            loading="lazy"
+            className={poster ? "" : "object-contain p-6 opacity-60"}
+          />
+          <span className="rating-badge">
+            <StarIcon className="size-3.5 text-amber-400" />
+            {media.rating ? media.rating.toFixed(1) : "N/A"}
+          </span>
         </div>
-      </div>
-    </div>
+        <h3>{media.title}</h3>
+        <p className="meta">
+          {[media.year, TYPE_LABEL[media.mediaType], media.language?.toUpperCase()]
+            .filter(Boolean)
+            .join(" · ")}
+        </p>
+      </Link>
+
+      <button
+        type="button"
+        onClick={() => toggle(media)}
+        className={`watchlist-btn ${saved ? "is-saved" : ""}`}
+        aria-label={saved ? `Remove ${media.title} from watchlist` : `Add ${media.title} to watchlist`}
+        aria-pressed={saved}
+      >
+        <BookmarkIcon filled={saved} className="size-4" />
+      </button>
+    </article>
   );
 };
+
+export const MovieCardSkeleton = () => (
+  <div className="media-card" aria-hidden="true">
+    <div className="poster skeleton" />
+    <div className="skeleton mt-3 h-4 w-3/4 rounded" />
+    <div className="skeleton mt-2 h-3 w-1/2 rounded" />
+  </div>
+);
 
 export default MovieCard;
