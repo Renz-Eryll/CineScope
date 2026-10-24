@@ -64,7 +64,7 @@ npm run dev
 
 | Variable | Description |
 | --- | --- |
-| `VITE_TMDB_API_KEY` | TMDB **API Read Access Token** (v4 bearer token) |
+| `TMDB_API_KEY` | TMDB **API Read Access Token** (v4 bearer token). Server-only: used by the `/api/tmdb` proxy, never sent to the browser |
 | `VITE_APPWRITE_PROJECT_ID` | Appwrite project ID (optional) |
 | `VITE_APPWRITE_DATABASE_ID` | Appwrite database ID (optional) |
 | `VITE_APPWRITE_COLLECTION_ID` | Collection with `searchTerm` (string), `count` (integer), `movie_id` (integer), `poster_url` (url) |
