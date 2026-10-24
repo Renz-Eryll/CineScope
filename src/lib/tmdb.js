@@ -1,6 +1,6 @@
-const API_BASE_URL = "https://api.themoviedb.org/3";
+// Requests go through our own /api/tmdb proxy, which adds the token server-side.
+const API_PROXY_URL = "/api/tmdb";
 const IMAGE_BASE_URL = "https://image.tmdb.org/t/p";
-const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 
 // TMDB genre id 16 = Animation. Japanese-language animation is a good proxy for anime.
 const ANIME_FILTER = { with_genres: "16", with_original_language: "ja" };
@@ -45,13 +45,8 @@ export class TmdbError extends Error {
 }
 
 export const tmdbFetch = async (path, params = {}, { signal } = {}) => {
-  if (!API_KEY) {
-    throw new TmdbError(
-      "Missing VITE_TMDB_API_KEY. Add your TMDB read access token to .env.local."
-    );
-  }
-
-  const url = new URL(`${API_BASE_URL}${path}`);
+  const url = new URL(API_PROXY_URL, window.location.origin);
+  url.searchParams.set("path", path);
   Object.entries(params).forEach(([key, value]) => {
     if (value !== undefined && value !== null && value !== "") {
       url.searchParams.set(key, value);
@@ -60,10 +55,7 @@ export const tmdbFetch = async (path, params = {}, { signal } = {}) => {
 
   const response = await fetch(url, {
     signal,
-    headers: {
-      accept: "application/json",
-      Authorization: `Bearer ${API_KEY}`,
-    },
+    headers: { accept: "application/json" },
   });
 
   if (!response.ok) {
