@@ -1,78 +1,97 @@
 <p align="center">
-  <img src="docs/screenshots/banner.png" alt="CineScope home page with a trending title hero banner" width="100%" />
+  <img src="./docs/cinescope-banner.webp" alt="CineScope Thumbnail" width="800"/>
 </p>
 
-<h1 align="center">CineScope 🎬</h1>
+##
 
 <p align="center">
-  Discover trending movies, TV series and anime: browse by category, watch trailers and build your watchlist.
+  <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB"/>
+  <img src="https://img.shields.io/badge/React_Router-CA4245?style=for-the-badge&logo=react-router&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Appwrite-F02E65?style=for-the-badge&logo=appwrite&logoColor=white"/>
+  <img src="https://img.shields.io/badge/TMDB-01B4E4?style=for-the-badge&logo=themoviedatabase&logoColor=white"/>
 </p>
+
+<h1 align="center">🎬 CineScope</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=white" alt="React 19" />
-  <img src="https://img.shields.io/badge/React_Router-7-CA4245?logo=reactrouter&logoColor=white" alt="React Router 7" />
-  <img src="https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?logo=tailwindcss&logoColor=white" alt="Tailwind CSS 4" />
-  <img src="https://img.shields.io/badge/Vite-6-646CFF?logo=vite&logoColor=white" alt="Vite 6" />
-  <img src="https://img.shields.io/badge/Appwrite-backend-FD366E?logo=appwrite&logoColor=white" alt="Appwrite" />
-  <img src="https://img.shields.io/badge/TMDB-API-01B4E4?logo=themoviedatabase&logoColor=white" alt="TMDB API" />
+  <b>CineScope</b> is a movie, TV series and anime discovery app built with <b>React 19</b>, <b>React Router</b> and <b>Tailwind CSS</b> on the <b>TMDB API</b>.<br/>
+  Browse by category, watch trailers, build a watchlist, and see what everyone else is searching for through an <b>Appwrite</b> backend.
 </p>
-
-CineScope is a movie, TV series and anime discovery app built with **React 19**, **React Router**, **Tailwind CSS v4** and the **TMDB API**. An **Appwrite** backend records what users search for and shows the most-searched titles.
-
-## Screenshots
-
-| Browse by category | Title details |
-| --- | --- |
-| ![Anime category page with genre filters and poster grid](docs/screenshots/browse.png) | ![Inception details page with cast, trailer button and recommendations](docs/screenshots/details.png) |
-
-## Features
-
-- **Category browsing**: Movies, TV Series, Anime and Anime Films, with genre filters and sorting (Most Popular / Top Rated / Newest). Filters live in the URL, so every view can be shared.
-- **Infinite scroll**: paginated results load automatically as you scroll (IntersectionObserver), with a manual "Load more" fallback.
-- **Unified search**: one search across movies and TV, debounced and synced to `/search?q=…`, with type filters.
-- **Detail pages**: backdrop hero, rating, runtime/seasons, genres, director/creators, top cast, recommendations and an embedded YouTube trailer.
-- **Watchlist**: save titles from anywhere; stored in `localStorage` through React Context.
-- **"Most Searched" ranking**: searches are recorded in Appwrite (normalized and de-duplicated) and shown as a ranked row on the home page.
-- **Rotating hero carousel** of today's trending titles.
-- Responsive from phone to desktop, with skeleton loaders, error/empty states, keyboard-accessible controls and `prefers-reduced-motion` support.
-
-## Engineering notes
-
-- **No stale-response races**: `useAsync` aborts the previous request (`AbortController`) whenever inputs change, so a slow response can't overwrite a newer one.
-- **Pagination hook** (`usePaginated`) accumulates pages, resets when the query changes, de-duplicates TMDB's overlapping pages and guards against skipped pages from double-fired loads.
-- **Normalized data layer** (`src/lib/tmdb.js`): movies and TV shows return different field names (`title` vs `name`, `release_date` vs `first_air_date`); everything is mapped to one shape so the UI never branches on media type.
-- **Graceful degradation**: if Appwrite is missing or unavailable, the analytics feature turns itself off and the rest of the app keeps working.
-
-## Project structure
-
-```
-src/
-  components/   UI building blocks (Navbar, HeroBanner, MediaRow, MovieCard, TrailerModal…)
-  context/      Watchlist provider (localStorage-backed)
-  hooks/        useAsync, usePaginated, useWatchlist
-  lib/          tmdb.js (API client + normalization), appwrite.js (search analytics)
-  pages/        Home, Browse, SearchResults, Details, Watchlist, NotFound
-```
-
-## Getting started
-
-```bash
-npm install
-cp .env.example .env.local   # then fill in your keys
-npm run dev
-```
-
-| Variable | Description |
-| --- | --- |
-| `TMDB_API_KEY` | TMDB **API Read Access Token** (v4 bearer token). Server-only: used by the `/api/tmdb` proxy, never sent to the browser |
-| `VITE_APPWRITE_PROJECT_ID` | Appwrite project ID (optional) |
-| `VITE_APPWRITE_DATABASE_ID` | Appwrite database ID (optional) |
-| `VITE_APPWRITE_COLLECTION_ID` | Collection with `searchTerm` (string), `count` (integer), `movie_id` (integer), `poster_url` (url) |
-
-## Deployment
-
-This is a client-side-routed SPA, so the host must serve `index.html` for unknown paths. `vercel.json` already handles this on Vercel. On Netlify, add a `public/_redirects` file containing `/* /index.html 200`.
 
 ---
 
-Data provided by [TMDB](https://www.themoviedb.org/). This product uses the TMDB API but is not endorsed or certified by TMDB.
+## ✨ Features
+
+- 🎞️ **Category browsing**: Movies, TV Series, Anime and Anime Films, with genre filters and sorting. Filters live in the URL, so every view can be shared
+- ♾️ **Infinite scroll** with a "Load more" fallback
+- 🔎 **Unified search** across movies and TV, debounced and synced to `/search?q=…`
+- 📄 **Detail pages**: rating, runtime or seasons, genres, director or creators, top cast, recommendations and an embedded trailer
+- 🔖 **Watchlist** saved in the browser
+- 🔥 **"Most Searched" ranking** recorded in Appwrite and shown on the home page
+- 📱 Responsive from phone to desktop, with skeleton loaders, empty states, keyboard support and reduced-motion support
+
+---
+
+## 🛠️ Engineering Notes
+
+- **No stale responses**: the previous request is aborted (`AbortController`) whenever inputs change, so a slow response can't overwrite a newer one
+- **Pagination hook** that accumulates pages, resets on a new query and de-duplicates TMDB's overlapping results
+- **One data shape**: movies and TV shows are normalized in `src/lib/tmdb.js`, so the UI never branches on media type
+- **API key stays server-side**: TMDB requests go through the `/api/tmdb` proxy
+- **Graceful degradation**: if Appwrite is unavailable, the ranking turns itself off and the rest of the app keeps working
+
+---
+
+## 🌐 Demo
+
+🔗 **Live Demo**: [CineScope](https://cinescope-webapp.vercel.app)
+
+---
+
+## ⚡ Quick Start
+
+Follow these steps to get a local copy of the project up and running.
+
+### 1️⃣ Clone the repository
+
+```bash
+git clone https://github.com/Renz-Eryll/CineScope.git
+cd CineScope
+```
+
+### 2️⃣ Environment setup
+
+Copy `.env.example` to `.env.local` and fill in your values:
+
+```env
+TMDB_API_KEY=your_tmdb_read_access_token
+VITE_APPWRITE_PROJECT_ID=your_project_id         # optional
+VITE_APPWRITE_DATABASE_ID=your_database_id       # optional
+VITE_APPWRITE_COLLECTION_ID=your_collection_id   # optional
+```
+
+### 3️⃣ Install dependencies
+
+```bash
+npm install
+```
+
+### 4️⃣ Start the development server
+
+```bash
+npm run dev
+```
+
+Open **http://localhost:5173** in your browser to view CineScope.
+
+---
+
+## 📧 Contact
+
+- **Name**: Renz Eryll Ramelo
+- **LinkedIn**: [www.linkedin.com/in/renz-eryll-ramelo](https://www.linkedin.com/in/renz-eryll-ramelo)
+- **GitHub**: [https://github.com/Renz-Eryll](https://github.com/Renz-Eryll)
+
+<sub>Data provided by [TMDB](https://www.themoviedb.org/). This product uses the TMDB API but is not endorsed or certified by TMDB.</sub>
